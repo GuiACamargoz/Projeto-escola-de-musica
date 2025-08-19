@@ -1,0 +1,23 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="text-align: center; max-width: 600px; margin: 60px auto;">
+    
+    <h1 style="color: #28a745;">Pagamento Realizado com Sucesso! 🎉</h1>
+    
+    <p style="font-size: 1.2em; margin: 20px 0;">Sua matrícula foi confirmada. Você já pode ver os detalhes na sua área de aluno.</p>
+
+    <div class="actions" style="margin-top: 40px; display: flex; justify-content: center; gap: 20px;">
+        
+        <a href="{% url 'agendamento:minha_area' %}" class="btn" style="background-color: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            Ir para Minha Área
+        </a>
+        
+        <a href="{% url 'agendamento:home' %}" class="btn" style="background-color: #6c757d; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            Ver Outros Cursos
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

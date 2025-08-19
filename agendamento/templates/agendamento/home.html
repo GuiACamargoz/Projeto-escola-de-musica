@@ -1,0 +1,27 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div style="text-align: center; padding: 40px 0;">
+    <h1>Nossos Cursos</h1>
+    <p>Selecione o instrumento para ver os horários disponíveis para matrícula.</p>
+
+    <div style="margin: 20px 0;">
+        <h2>Quer experimentar primeiro?</h2>
+        <p>Agende uma aula experimental avulsa e conheça a nossa escola. Se se matricular depois, o valor da aula é descontado da sua primeira mensalidade!</p>
+        <a href="{% url 'agendamento:agendar_aula_experimental' %}" class="btn">Ver Vagas para Aula Experimental</a>
+    </div>
+
+    <hr style="margin: 40px auto; width: 50%;">
+
+    <h2>Matrículas Mensais</h2>
+    <div class="instrumentos-container" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
+        {% for instrumento in instrumentos %}
+            <a href="{% url 'agendamento:lista_horarios' instrumento.id %}" class="instrumento-link" style="text-decoration: none;">
+                <div class="instrumento-item" style="background-color: #007bff; color: white; padding: 40px; border-radius: 8px; min-width: 150px;">
+                    <h3>{{ instrumento.nome }}</h3>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

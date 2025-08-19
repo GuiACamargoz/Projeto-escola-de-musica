@@ -1,0 +1,25 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="text-align: center; max-width: 600px; margin: 60px auto;">
+    
+    <h1 style="color: #28a745;">Horário Adicionado ao Carrinho! ✅</h1>
+    
+    <p style="font-size: 1.2em; margin: 20px 0;">O horário foi reservado com sucesso no seu carrinho.</p>
+
+    <h3 style="margin-top: 40px;">O que você deseja fazer agora?</h3>
+
+    <div class="actions" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+        
+        <a href="{% url 'agendamento:home' %}" class="btn" style="background-color: #17a2b8; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            ➕ Adicionar Outra Matrícula
+        </a>
+        
+        <a href="{% url 'agendamento:ver_carrinho' %}" class="btn" style="background-color: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            🛒 Ver Carrinho e Finalizar
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="text-align: center; max-width: 600px; margin: 60px auto;">
+    
+    <h1 style="color: #28a745;">Primeiro Passo Concluído! ✅</h1>
+    
+    <p style="font-size: 1.2em; margin: 20px 0;">Seu primeiro horário foi adicionado ao carrinho.</p>
+
+    <h3 style="margin-top: 40px;">Agora, vamos para o próximo passo?</h3>
+
+    <div class="actions" style="margin-top: 20px; display: flex; justify-content: center; gap: 20px;">
+        
+        <a href="{% url 'agendamento:home' %}" class="btn" style="background-color: #17a2b8; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            ➕ Matricular Outra Pessoa
+        </a>
+        
+        <a href="{% url 'agendamento:ver_carrinho' %}" class="btn" style="background-color: #007bff; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-size: 1.1em;">
+            🛒 Ir para o Pagamento
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

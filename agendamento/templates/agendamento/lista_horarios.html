@@ -1,0 +1,37 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+    {% if messages %}
+        <div class="messages" style="text-align: center; margin: 20px 0;">
+            {% for message in messages %}
+                <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <h1>Horários para {{ instrumento.nome }}</h1>
+    <p>Abaixo estão os horários fixos com vagas disponíveis. Escolha um para adicionar ao seu carrinho de matrículas.</p>
+    <hr>
+
+    {% for horario in horarios %}
+        <div class="aula-item">
+            <h2>{{ horario.instrumento.nome }} com {{ horario.professor.user.get_full_name|default:horario.professor.nome }}</h2>
+            <p><strong>Dia Fixo:</strong> {{ horario.get_dia_da_semana_display }}</p>
+            <p><strong>Horário Fixo:</strong> {{ horario.horario|time:"H:i" }}</p>
+            <p><strong>Vagas Restantes:</strong> {{ horario.vagas_restantes }} de {{ horario.capacidade }}</p>
+            <p><strong>Mensalidade:</strong> R$ {{ horario.instrumento.preco_mensal|floatformat:2 }}</p>
+
+            <form action="{% url 'agendamento:adicionar_ao_carrinho' horario.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Adicionar ao Carrinho</button>
+            </form>
+        </div>
+    {% empty %}
+        <p>Nenhum horário com vagas disponíveis para este instrumento de momento. Volte em breve!</p>
+    {% endfor %}
+
+    <br>
+    <a href="{% url 'agendamento:home' %}">Voltar para a lista de instrumentos</a>
+{% endblock %}

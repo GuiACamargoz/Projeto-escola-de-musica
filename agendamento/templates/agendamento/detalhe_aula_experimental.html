@@ -1,0 +1,28 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 40px auto;">
+
+    <h1>Agende sua Aula Experimental</h1>
+    <p>Por favor, verifique os detalhes abaixo antes de prosseguir para o pagamento.</p>
+    <hr>
+
+    <div class="aula-item">
+        <h3>{{ vaga.instrumento.nome }} com {{ vaga.professor.user.get_full_name|default:vaga.professor.nome }}</h3>
+        <p><strong>Data e Hora:</strong> {{ vaga.data_hora|date:"d/m/Y H:i" }}</p>
+        <p><strong>Valor:</strong> R$ {{ vaga.valor|floatformat:2 }}</p>
+    </div>
+
+    <div class="payment-section" style="margin-top: 30px;">
+        <form action="{% url 'agendamento:confirmar_aula_experimental' vaga.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #28a745; color: white; padding: 10px 20px; font-size: 1.1em; border: none; border-radius: 5px; cursor: pointer;">
+                Confirmar e Pagar R$ {{ vaga.valor|floatformat:2 }}
+            </button>
+        </form>
+        <br>
+        <a href="{% url 'agendamento:agendar_aula_experimental' %}">Voltar para a lista de vagas</a>
+    </div>
+
+</div>
+{% endblock %}

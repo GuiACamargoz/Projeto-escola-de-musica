@@ -1,73 +1,94 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Modelo para os Professores da escola
+# NOVO MODELO: Para guardar configurações globais da escola
+class Configuracao(models.Model):
+    valor_taxa_matricula = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        default=150.00,
+        help_text="Valor da taxa de matrícula única para novos alunos."
+    )
+
+    class Meta:
+        verbose_name = "Configuração da Escola"
+        verbose_name_plural = "Configurações da Escola"
+
+    def __str__(self):
+        return "Configurações Gerais"
+
 class Professor(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     nome = models.CharField(max_length=100)
-    instrumento_principal = models.CharField(max_length=50)
-    bio_curta = models.TextField(blank=True, help_text="Um breve resumo sobre o professor.")
-
-    # NOVA CLASSE META para corrigir os nomes no painel
     class Meta:
         verbose_name = "Professor"
         verbose_name_plural = "Professores"
-
     def __str__(self):
         return self.nome
 
-# Modelo para os Tipos de Instrumentos oferecidos
 class Instrumento(models.Model):
-    nome = models.CharField(max_length=50, unique=True, help_text="Ex: Violão, Piano, Canto")
-
+    nome = models.CharField(max_length=50, unique=True)
     class Meta:
         verbose_name = "Instrumento"
         verbose_name_plural = "Instrumentos"
-
     def __str__(self):
         return self.nome
 
-# Modelo para as Aulas oferecidas
-class Aula(models.Model):
-    NIVEL_CHOICES = [('IN', 'Iniciante'), ('IT', 'Intermediário'), ('AV', 'Avançado'), ('UN', 'Nível Único')]
-    instrumento = models.ForeignKey(Instrumento, on_delete=models.PROTECT)
-    professor = models.ForeignKey(Professor, on_delete=models.SET_NULL, null=True)
-    nivel = models.CharField(max_length=2, choices=NIVEL_CHOICES, default='UN')
-    duracao_min = models.IntegerField(default=50, help_text="Duração da aula em minutos")
-    preco = models.DecimalField(max_digits=6, decimal_places=2)
-    is_experimental = models.BooleanField(default=False, help_text="Marque se for uma aula experimental.")
-
-    class Meta:
-        verbose_name = "Aula"
-        verbose_name_plural = "Aulas"
-
-    def __str__(self):
-        return f"Aula de {self.instrumento.nome} ({self.get_nivel_display()})"
-
-# Modelo para os Clientes (Alunos)
 class Cliente(models.Model):
-    nome_completo = models.CharField(max_length=100)
-    whatsapp = models.CharField(max_length=15, unique=True, help_text="Use o formato (XX) XXXXX-XXXX")
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    celular = models.CharField(max_length=15, unique=True)
+    pagou_taxa_matricula = models.BooleanField(default=False)
+    
+    # --- NOVO CAMPO ADICIONADO AQUI ---
+    realizou_aula_experimental = models.BooleanField(default=False)
+    
     data_criacao = models.DateTimeField(auto_now_add=True)
-
     class Meta:
-        verbose_name = "Cliente"
-        verbose_name_plural = "Clientes"
-
+        verbose_name = "Aluno"
+        verbose_name_plural = "Alunos"
     def __str__(self):
-        return self.nome_completo
+        return self.user.get_full_name() or self.user.username
 
-# Modelo para os Agendamentos feitos
-class Agendamento(models.Model):
-    STATUS_CHOICES = [('AG', 'Agendado'), ('CA', 'Cancelado'), ('RE', 'Realizado')]
-    PAGAMENTO_CHOICES = [('PE', 'Pendente'), ('AP', 'Aprovado'), ('RE', 'Recusado')]
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    aula = models.ForeignKey(Aula, on_delete=models.CASCADE)
-    data_hora = models.DateTimeField()
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default='AG')
-    pagamento_status = models.CharField(max_length=2, choices=PAGAMENTO_CHOICES, default='PE')
-
+class HorarioDisponivel(models.Model):
+    DIAS_SEMANA_CHOICES = [
+        (0, 'Segunda-feira'), (1, 'Terça-feira'), (2, 'Quarta-feira'),
+        (3, 'Quinta-feira'), (4, 'Sexta-feira'), (5, 'Sábado'), (6, 'Domingo')
+    ]
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
+    dia_da_semana = models.IntegerField(choices=DIAS_SEMANA_CHOICES)
+    horario = models.TimeField()
+    preco_mensal = models.DecimalField(max_digits=7, decimal_places=2)
+    capacidade = models.PositiveIntegerField(default=1)
     class Meta:
-        verbose_name = "Agendamento"
-        verbose_name_plural = "Agendamentos"
-
+        verbose_name = "Horário Fixo para Matrícula"
+        verbose_name_plural = "Horários Fixos para Matrícula"
     def __str__(self):
-        return f"{self.cliente.nome_completo} - {self.aula.instrumento.nome} em {self.data_hora.strftime('%d/%m/%Y %H:%M')}"
+        return f"{self.instrumento.nome} com {self.professor.nome} - {self.get_dia_da_semana_display()} às {self.horario}"
+
+class Matricula(models.Model):
+    STATUS_PAGAMENTO_CHOICES = [('PENDENTE', 'Pendente'), ('PAGO', 'Pago')]
+    aluno = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    horario = models.ForeignKey(HorarioDisponivel, on_delete=models.CASCADE)
+    data_matricula = models.DateField(auto_now_add=True)
+    status_pagamento_mes_atual = models.CharField(max_length=10, choices=STATUS_PAGAMENTO_CHOICES, default='PENDENTE')
+    ativo = models.BooleanField(default=True)
+    class Meta:
+        verbose_name = "Matrícula"
+        verbose_name_plural = "Matrículas"
+    def __str__(self):
+        return f"{self.aluno} matriculado em {self.horario}"
+
+class VagaAulaExperimental(models.Model):
+    STATUS_CHOICES = [('DISPONIVEL', 'Disponível'), ('AGENDADA', 'Agendada')]
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE)
+    instrumento = models.ForeignKey(Instrumento, on_delete=models.CASCADE)
+    data_hora = models.DateTimeField(unique=True)
+    aluno = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='DISPONIVEL')
+    valor = models.DecimalField(max_digits=7, decimal_places=2, default=150.00)
+    class Meta:
+        verbose_name = "Vaga para Aula Experimental"
+        verbose_name_plural = "Vagas para Aulas Experimentais"
+    def __str__(self):
+        return f"Vaga de {self.instrumento.nome} em {self.data_hora.strftime('%d/%m/%Y às %H:%M')}"

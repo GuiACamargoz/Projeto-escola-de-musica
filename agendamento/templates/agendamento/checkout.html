@@ -1,0 +1,34 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+    <h1 style="text-align: center; margin-bottom: 30px;">Finalizar Matrícula</h1>
+    <div class="cart-summary" style="margin-bottom: 30px;">
+        <h3>Confirme os itens antes de prosseguir para o pagamento:</h3>
+        {% for item in cart %}
+            <div class="cart-item" style="padding: 10px 0; border-bottom: 1px solid #f2f2f2;">
+                <span>{{ item.horario.instrumento.nome }} com {{ item.horario.professor.user.get_full_name|default:item.horario.professor.nome }} ({{ item.horario.get_dia_da_semana_display }} às {{ item.horario.horario|time:"H:i" }}) - R$ {{ item.preco|floatformat:2 }}</span>
+            </div>
+        {% endfor %}
+        <div style="text-align: right; margin-top: 20px; font-size: 1.1em;">
+            <p>Total Mensalidades: <strong>R$ {{ total_mensalidades|floatformat:2 }}</strong></p>
+            {% if taxa_matricula > 0 %}
+                <p>Taxa de Matrícula: <strong>R$ {{ taxa_matricula|floatformat:2 }}</strong></p>
+                <small style="color: #666;">(Taxa única para novos alunos)</small>
+            {% endif %}
+            <hr style="margin: 15px 0;">
+            <h4 style="font-size: 1.4em;">Total a Pagar: <strong>R$ {{ total_final|floatformat:2 }}</strong></h4>
+        </div>
+    </div>
+    <div class="payment-section" style="text-align: center;">
+        <form action="{% url 'agendamento:confirmar_pagamento' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn" style="background-color: #28a745; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 1.2em; border: none; cursor: pointer;">
+                Simular Pagamento e Confirmar
+            </button>
+        </form>
+        <br>
+        <a href="{% url 'agendamento:ver_carrinho' %}">Voltar para o Carrinho</a>
+    </div>
+</div>
+{% endblock %}

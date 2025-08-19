@@ -1,0 +1,15 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+  <h2>Entrar</h2>
+  <p>Por favor, use suas credenciais para entrar:</p>
+
+  <form method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Entrar</button>
+  </form>
+
+  <br>
+  <p>Ainda não tem uma conta? <a href="{% url 'pagina_cadastro' %}">Cadastre-se aqui</a>.</p>
+{% endblock %}

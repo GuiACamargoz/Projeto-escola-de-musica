@@ -1,0 +1,48 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 40px auto;">
+    <h1 style="text-align: center; margin-bottom: 30px;">Meu Carrinho de Matrículas</h1>
+    {% if cart|length > 0 %}
+        <div class="cart-items">
+            {% for item in cart %}
+                <div class="cart-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;">
+                    <div>
+                        <h4 style="margin: 0;">
+                            {{ item.horario.instrumento.nome }} com {{ item.horario.professor.user.get_full_name|default:item.horario.professor.nome }}
+                            {% if item.tipo == 'organizador' %}
+                                <span style="font-weight: normal; font-size: 0.9em; color: #007bff;">(Para Si)</span>
+                            {% else %}
+                                <span style="font-weight: normal; font-size: 0.9em; color: #17a2b8;">(Para Convidado)</span>
+                            {% endif %}
+                        </h4>
+                        <p style="margin: 5px 0; color: #555;">
+                            <strong>Horário Fixo:</strong> {{ item.horario.get_dia_da_semana_display }} às {{ item.horario.horario|time:"H:i" }}
+                        </p>
+                    </div>
+                    <div style="text-align: right;">
+                        <strong style="font-size: 1.2em;">R$ {{ item.preco|floatformat:2 }}</strong><br>
+                        <form action="{% url 'agendamento:remover_do_carrinho' item.item_id %}" method="post" style="margin-top: 5px;">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color: transparent; border: none; color: #dc3545; cursor: pointer; padding: 0; font-size: 0.9em; text-decoration: underline;">Remover</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="cart-summary" style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 5px; text-align: right;">
+            <h2 style="margin-bottom: 20px;">Resumo</h2>
+            <p style="font-size: 1.3em;"><strong>Total das Mensalidades: R$ {{ cart.get_total_price|floatformat:2 }}</strong></p>
+            <a href="{% url 'agendamento:checkout' %}" class="btn" style="background-color: #28a745; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-size: 1.2em; margin-top: 10px; display: inline-block;">
+                Finalizar Matrículas e Pagar
+            </a>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 50px; border: 2px dashed #ddd; border-radius: 10px;">
+            <h2>Seu carrinho de matrículas está vazio.</h2>
+            <p style="margin-top: 15px;">Comece escolhendo um instrumento para ver os horários disponíveis.</p>
+            <a href="{% url 'agendamento:home' %}" class="btn" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">Ver Cursos</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

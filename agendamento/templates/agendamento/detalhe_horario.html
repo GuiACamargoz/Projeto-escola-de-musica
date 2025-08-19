@@ -1,0 +1,22 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+    <h1>Confirme sua Matrícula</h1>
+    <p>Você está prestes a se matricular no horário abaixo.</p>
+    <hr>
+
+    <div class="aula-item">
+        <h2>{{ horario.instrumento.nome }} com {{ horario.professor.nome }}</h2>
+        <p><strong>Dia Fixo:</strong> {{ horario.get_dia_da_semana_display }}</p>
+        <p><strong>Horário Fixo:</strong> {{ horario.horario }}</p>
+        <p><strong>Vagas Totais:</strong> {{ horario.capacidade }}</p>
+        <p><strong>Mensalidade:</strong> R$ {{ horario.preco_mensal }}</p>
+        {# Em detalhe_horario.html #}
+
+<a href="{% url 'pagina_pagamento' pk=horario.pk %}">
+    <button>Confirmar e Ir para Pagamento</button>
+</a>
+    </div>
+    <br>
+    <a href="{% url 'home' %}">Voltar para a lista de horários</a>
+{% endblock %}

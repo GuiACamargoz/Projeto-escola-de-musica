@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Escola de Música</title>
+    <link rel="stylesheet" href="{% static 'agendamento/css/style.css' %}">
+</head>
+<body>
+
+    <header style="background-color: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div class="logo">
+            <a href="{% url 'agendamento:home' %}" style="color: white; text-decoration: none; font-size: 1.5em;">Escola de Música</a>
+        </div>
+        <nav>
+            <a href="{% url 'agendamento:ver_carrinho' %}" style="color: white; margin-left: 15px;">Carrinho ({{ request.session.cart|length|default:0 }})</a>
+
+            {% if user.is_authenticated %}
+                <span>Olá, {{ user.first_name|default:user.username }}!</span>
+                
+                <a href="{% url 'agendamento:minha_area' %}" style="color: white; margin-left: 15px; text-decoration: underline;">Minha Área</a>
+
+                <form action="{% url 'agendamento:logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0; margin-left: 15px; font-size: 1em; font-family: sans-serif;">Sair</button>
+                </form>
+            
+            {% else %}
+                <a href="{% url 'agendamento:pagina_cadastro' %}" style="color: white; margin-left: 15px;">Cadastrar</a>
+                <a href="{% url 'agendamento:login' %}" style="color: white; margin-left: 15px;">Entrar</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

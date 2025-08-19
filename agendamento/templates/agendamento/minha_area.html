@@ -1,0 +1,29 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<h1>Minha Área</h1>
+<p>Olá, {{ user.first_name|default:user.username }}! Bem-vindo(a) ao seu painel.</p>
+<hr>
+
+<h2>Minhas Matrículas Ativas</h2>
+{% if matriculas %}
+    <ul>
+    {% for matricula in matriculas %}
+        <li>
+            <strong>{{ matricula.horario.instrumento.nome }}</strong> com {{ matricula.horario.professor.user.get_full_name|default:matricula.horario.professor.nome }}
+            <p>Horário: {{ matricula.horario.get_dia_da_semana_display }} às {{ matricula.horario.horario|time:"H:i" }}</p>
+            <p>Status do Pagamento deste Mês: {{ matricula.get_status_pagamento_mes_atual_display }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Você ainda não possui nenhuma matrícula ativa.</p>
+    <a href="{% url 'agendamento:home' %}">Ver cursos disponíveis</a>
+{% endif %}
+
+<hr>
+<h2>Meus Dados</h2>
+<p><strong>Nome Completo:</strong> {{ user.get_full_name }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Celular:</strong> {{ cliente.celular }}</p>
+{% endblock %}

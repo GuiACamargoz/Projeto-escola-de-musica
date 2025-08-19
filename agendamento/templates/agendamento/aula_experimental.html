@@ -1,0 +1,22 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+<h1>Vagas para Aula Experimental</h1>
+<p>Escolha um horário para conhecer nossa escola!</p>
+<hr>
+
+{% for vaga in vagas %}
+    <div class="aula-item">
+        <h3>{{ vaga.instrumento.nome }} com {{ vaga.professor.user.get_full_name|default:vaga.professor.nome }}</h3>
+        <p><strong>Data e Hora:</strong> {{ vaga.data_hora|date:"d/m/Y H:i" }}</p>
+        <p><strong>Valor:</strong> R$ {{ vaga.valor|floatformat:2 }}</p>
+        
+        <a href="{% url 'agendamento:detalhe_aula_experimental' vaga.pk %}" class="btn">Agendar este horário</a>
+    </div>
+{% empty %}
+    <p>Nenhuma vaga para aulas experimentais no momento. Volte em breve!</p>
+{% endfor %}
+
+<br>
+<a href="{% url 'agendamento:home' %}">Voltar</a>
+{% endblock %}

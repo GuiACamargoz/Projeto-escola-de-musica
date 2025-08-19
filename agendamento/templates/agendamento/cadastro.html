@@ -1,0 +1,13 @@
+{% extends 'agendamento/base.html' %}
+
+{% block content %}
+    <h1>Crie sua Conta</h1>
+    <p>Por favor, preencha o formulário abaixo para se cadastrar:</p>
+
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <p><button type="submit">Cadastrar</button></p>
+    </form>
+
+{% endblock %}
