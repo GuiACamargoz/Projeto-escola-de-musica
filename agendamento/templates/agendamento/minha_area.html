@@ -5,6 +5,22 @@
 <p>Olá, {{ user.first_name|default:user.username }}! Bem-vindo(a) ao seu painel.</p>
 <hr>
 
+<h2>Minhas Aulas Experimentais Agendadas</h2>
+{% if aulas_experimentais %}
+    <ul>
+    {% for aula in aulas_experimentais %}
+        <li>
+            <strong>{{ aula.instrumento.nome }}</strong> com {{ aula.professor.user.get_full_name|default:aula.professor.nome }}
+            <p>Data e Hora: {{ aula.data_hora|date:"d/m/Y H:i" }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Você não possui nenhuma aula experimental agendada.</p>
+{% endif %}
+<hr>
+
+
 <h2>Minhas Matrículas Ativas</h2>
 {% if matriculas %}
     <ul>

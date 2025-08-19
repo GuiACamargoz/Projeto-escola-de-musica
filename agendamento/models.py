@@ -1,19 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# NOVO MODELO: Para guardar configurações globais da escola
 class Configuracao(models.Model):
-    valor_taxa_matricula = models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        default=150.00,
-        help_text="Valor da taxa de matrícula única para novos alunos."
-    )
-
+    valor_taxa_matricula = models.DecimalField(max_digits=7, decimal_places=2, default=150.00, help_text="Valor da taxa de matrícula única para novos alunos.")
     class Meta:
         verbose_name = "Configuração da Escola"
         verbose_name_plural = "Configurações da Escola"
-
     def __str__(self):
         return "Configurações Gerais"
 
@@ -37,11 +29,10 @@ class Instrumento(models.Model):
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     celular = models.CharField(max_length=15, unique=True)
-    pagou_taxa_matricula = models.BooleanField(default=False)
-    
     # --- NOVO CAMPO ADICIONADO AQUI ---
+    data_nascimento = models.DateField(null=True, blank=True) # Permitimos que seja opcional por enquanto
+    pagou_taxa_matricula = models.BooleanField(default=False)
     realizou_aula_experimental = models.BooleanField(default=False)
-    
     data_criacao = models.DateTimeField(auto_now_add=True)
     class Meta:
         verbose_name = "Aluno"

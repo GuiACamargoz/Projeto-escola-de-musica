@@ -5,9 +5,10 @@
     <p>Por favor, preencha o formulário abaixo para se cadastrar:</p>
 
     <form method="post">
-        {{ form.as_p }}
         {% csrf_token %}
+        {{ form.as_p }}
         <p><button type="submit">Cadastrar</button></p>
     </form>
-
+    <br>
+    <p>Já tem uma conta? <a href="{% url 'agendamento:login' %}">Entre aqui</a>.</p>
 {% endblock %}

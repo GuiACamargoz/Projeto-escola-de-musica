@@ -4,39 +4,70 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Escola de Música</title>
+    <title>Jeziel Peker - Escola de Música</title>
     <link rel="stylesheet" href="{% static 'agendamento/css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header style="background-color: #333; color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;">
+    <header>
         <div class="logo">
-            <a href="{% url 'agendamento:home' %}" style="color: white; text-decoration: none; font-size: 1.5em;">Escola de Música</a>
+            <a href="{% url 'agendamento:home' %}">
+                <img src="{% static 'agendamento/img/logo.png' %}" alt="Logo Jeziel Peker Escola de Música">
+            </a>
         </div>
         <nav>
-            <a href="{% url 'agendamento:ver_carrinho' %}" style="color: white; margin-left: 15px;">Carrinho ({{ request.session.cart|length|default:0 }})</a>
-
+            <a href="{% url 'agendamento:ver_carrinho' %}">Carrinho ({{ request.session.cart|length|default:0 }})</a>
             {% if user.is_authenticated %}
                 <span>Olá, {{ user.first_name|default:user.username }}!</span>
-                
-                <a href="{% url 'agendamento:minha_area' %}" style="color: white; margin-left: 15px; text-decoration: underline;">Minha Área</a>
-
+                <a href="{% url 'agendamento:minha_area' %}">Minha Área</a>
                 <form action="{% url 'agendamento:logout' %}" method="post" style="display: inline;">
                     {% csrf_token %}
-                    <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0; margin-left: 15px; font-size: 1em; font-family: sans-serif;">Sair</button>
+                    <button type="submit" style="background: none; border: none; color: white; cursor: pointer; padding: 0; margin-left: 15px; font-size: 1em; font-family: inherit;">Sair</button>
                 </form>
-            
             {% else %}
-                <a href="{% url 'agendamento:pagina_cadastro' %}" style="color: white; margin-left: 15px;">Cadastrar</a>
-                <a href="{% url 'agendamento:login' %}" style="color: white; margin-left: 15px;">Entrar</a>
+                <a href="{% url 'agendamento:pagina_cadastro' %}">Cadastrar</a>
+                <a href="{% url 'agendamento:login' %}">Entrar</a>
             {% endif %}
         </nav>
     </header>
 
     <div class="container">
+        {% if messages %}
+            <div class="messages" style="text-align: center; margin: 15px 0;">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>Jeziel Peker - Escola de Música</h3>
+                <p>Transformando paixão em música. Aulas para todos os níveis e idades.</p>
+            </div>
+            <div class="footer-section contact">
+                <h3>Contato</h3>
+                <p><strong>Endereço:</strong><br>Av. João Batista de Souza, 324<br>Cachoeirinha, RS 94920-100</p>
+                <p><strong>Telefone/WhatsApp:</strong><br><a href="https://wa.me/555192076658" target="_blank">+55 51 9207-6658</a></p>
+            </div>
+            <div class="footer-section social">
+                <h3>Redes Sociais</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/escolajezielpeker/" target="_blank">Instagram</a>
+                    <a href="https://www.facebook.com/jeziel.bernardopeker/" target="_blank">Facebook</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>

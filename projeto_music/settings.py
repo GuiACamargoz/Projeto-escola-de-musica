@@ -128,5 +128,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# MUDANÇA PRINCIPAL AQUI: Diz ao Django qual é a nossa URL de login
-LOGIN_URL = 'login'
+# MUDANÇA PRINCIPAL AQUI: Diz ao Django qual é o endereço completo da nossa URL de login
+LOGIN_URL = 'agendamento:login'

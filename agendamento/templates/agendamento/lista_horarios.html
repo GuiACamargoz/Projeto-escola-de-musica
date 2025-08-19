@@ -1,16 +1,6 @@
 {% extends 'agendamento/base.html' %}
 
 {% block content %}
-    {% if messages %}
-        <div class="messages" style="text-align: center; margin: 20px 0;">
-            {% for message in messages %}
-                <div class="alert alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px;">
-                    <strong>{{ message }}</strong>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-
     <h1>Horários para {{ instrumento.nome }}</h1>
     <p>Abaixo estão os horários fixos com vagas disponíveis. Escolha um para adicionar ao seu carrinho de matrículas.</p>
     <hr>
