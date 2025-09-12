@@ -1,22 +1,3 @@
-Sim, você está certíssimo! O vídeo mostra que a base do novo design está funcionando, mas os detalhes ainda não estão alinhados com a identidade visual que definimos. Vamos arrumar exatamente os três pontos que você mencionou.
-
-O problema está todo no nosso arquivo de CSS e na forma como o logo está sendo chamado.
-
-Plano de Ação: O Refinamento Visual
-Abaixo estão as correções para deixar os botões amarelos, o rodapé mais elegante e o seu logo visível.
-
-1. Corrigindo a Cor dos Botões e Ajustando o Rodapé
-O problema dos botões azuis e do rodapé grande pode ser resolvido no mesmo lugar: o nosso arquivo de estilos CSS. Criei uma versão atualizada dele para você.
-
-Arquivo agendamento/static/agendamento/css/style.css (Completo e Atualizado)
-Substitua o conteúdo completo do seu style.css por este. As principais mudanças são:
-
-O .instrumento-item agora usa a --cor-primaria (seu amarelo).
-
-O footer teve seu tamanho (padding) e fontes diminuídos para um visual mais delicado.
-
-CSS
-
 /* Importa as fontes do Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&family=Roboto:wght@400;500&display=swap');
 
@@ -68,8 +49,7 @@ header {
 }
 
 header .logo img {
-    height: 50px; 
-    width: auto;
+    height: 50px; /* Ajuste a altura do logo conforme necessário */
 }
 
 header nav a {
@@ -84,46 +64,43 @@ header nav a:hover {
 }
 
 
-/* Footer (Rodapé) - AJUSTADO */
+/* Footer (Rodapé) */
 footer {
     background-color: var(--cor-header-footer);
     color: #ccc;
-    padding: 20px; /* Padding diminuído */
+    padding: 40px 20px;
     margin-top: 60px;
-    font-size: 0.9em; /* Fonte menor */
+    text-align: center;
 }
 
 footer .footer-content {
     max-width: 960px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between; /* Espaçamento ajustado */
-    align-items: flex-start;
+    justify-content: space-around;
     text-align: left;
     flex-wrap: wrap;
-    gap: 20px;
 }
 
 footer .footer-section {
     flex: 1;
-    min-width: 200px; /* Largura mínima ajustada */
+    min-width: 250px;
+    margin: 20px;
 }
 
 footer h3 {
     color: var(--cor-primaria);
     border-bottom: 1px solid #555;
-    padding-bottom: 8px;
-    margin-top: 0;
-    font-size: 1.2em;
+    padding-bottom: 10px;
 }
 
 footer p, footer a {
     color: #ccc;
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
 footer .social-links a {
-    font-size: 1.2em;
+    font-size: 1.5em;
     margin-right: 15px;
     transition: color 0.3s ease;
 }
@@ -132,7 +109,9 @@ footer .social-links a:hover {
     color: var(--cor-primaria);
 }
 
-/* Estilo dos Cards de Instrumento - CORRIGIDO */
+/* Adicione este código ao final do seu style.css */
+
+/* Estilo dos Cards de Instrumento */
 .instrumentos-container {
     display: flex;
     justify-content: center;
@@ -149,15 +128,15 @@ footer .social-links a:hover {
     background-color: var(--cor-primaria); /* Usa nosso amarelo! */
     color: var(--cor-header-footer); /* Texto escuro para contraste */
     padding: 30px 40px;
-    border-radius: 12px;
+    border-radius: 12px; /* Cantos arredondados */
     min-width: 180px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Sombra sutil */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .instrumento-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Efeito de levantar */
     box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
@@ -184,5 +163,5 @@ footer .social-links a:hover {
 }
 
 .btn:hover {
-    background-color: #e4a600; /* Amarelo um pouco mais escuro */
+    background-color: #e4a600; /* Um tom de amarelo um pouco mais escuro */
 }

@@ -1,27 +1,37 @@
 {% extends 'agendamento/base.html' %}
 
 {% block content %}
-<div style="text-align: center; padding: 40px 0;">
-    <h1>Nossos Cursos</h1>
-    <p>Selecione o instrumento para ver os horários disponíveis para matrícula.</p>
+<div class="container mx-auto max-w-2xl text-center">
 
-    <div style="margin: 20px 0;">
-        <h2>Quer experimentar primeiro?</h2>
-        <p>Agende uma aula experimental avulsa e conheça a nossa escola. Se se matricular depois, o valor da aula é descontado da sua primeira mensalidade!</p>
-        <a href="{% url 'agendamento:agendar_aula_experimental' %}" class="btn">Ver Vagas para Aula Experimental</a>
-    </div>
+    <!-- Boas-vindas -->
+    <h1 class="font-spartan text-4xl font-extrabold text-jp-dark mt-4">Sua jornada musical começa aqui.</h1>
+    <p class="mt-2 text-gray-600">Aulas de música para todas as idades e níveis. <br>Qual o seu primeiro passo?</p>
 
-    <hr style="margin: 40px auto; width: 50%;">
+    <!-- Ações Principais -->
+    <div class="mt-8 flex flex-col gap-6">
 
-    <h2>Matrículas Mensais</h2>
-    <div class="instrumentos-container" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; margin-top: 20px;">
-        {% for instrumento in instrumentos %}
-            <a href="{% url 'agendamento:lista_horarios' instrumento.id %}" class="instrumento-link" style="text-decoration: none;">
-                <div class="instrumento-item" style="background-color: #007bff; color: white; padding: 40px; border-radius: 8px; min-width: 150px;">
-                    <h3>{{ instrumento.nome }}</h3>
-                </div>
+        <!-- Card: Aula Experimental -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200 text-center">
+            <span class="material-icons text-4xl text-jp-yellow">auto_awesome</span>
+            <h2 class="font-spartan text-2xl font-bold text-jp-dark mt-2">Faça uma Aula Experimental</h2>
+            <p class="mt-2 text-sm text-gray-600">A melhor forma de começar! Conheça nossa escola e metodologia. Se gostar, o valor é descontado na sua primeira mensalidade.</p>
+            <a href="{% url 'agendamento:agendar_aula_experimental' %}" class="mt-4 inline-block bg-jp-dark text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-800 transition duration-300 text-sm">
+                Ver Vagas Disponíveis
             </a>
-        {% endfor %}
+        </div>
+
+        <!-- Card: Matrículas Mensais -->
+        <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
+            <h2 class="font-spartan text-2xl font-bold text-jp-dark text-center">Nossos Cursos</h2>
+            <p class="mt-1 text-sm text-gray-600 text-center">Pronto para se matricular? Escolha um instrumento abaixo.</p>
+            <div class="grid grid-cols-2 gap-3 mt-4">
+                {% for instrumento in instrumentos %}
+                    <a href="{% url 'agendamento:lista_horarios' instrumento.id %}" class="group block text-center bg-jp-yellow rounded-lg p-3 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300">
+                        <h3 class="font-spartan text-base font-bold text-jp-dark">{{ instrumento.nome }}</h3>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

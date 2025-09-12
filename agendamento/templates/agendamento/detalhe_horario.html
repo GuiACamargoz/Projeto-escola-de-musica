@@ -12,7 +12,6 @@
         <p><strong>Vagas Totais:</strong> {{ horario.capacidade }}</p>
         <p><strong>Mensalidade:</strong> R$ {{ horario.preco_mensal }}</p>
         {# Em detalhe_horario.html #}
-
 <a href="{% url 'pagina_pagamento' pk=horario.pk %}">
     <button>Confirmar e Ir para Pagamento</button>
 </a>
